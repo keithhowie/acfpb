@@ -12,6 +12,8 @@
 #### App / Library Projects
 #### Scaffolding
 #### Generating Components etc
+#### Routing
+#### Angular Material
 
 ### User Authentication
 #### Google Auth
@@ -32,6 +34,8 @@
 Get over it!
 
 ### Storage
+#### Security Rules
+#### User Claim Tokens
 
 ### Cloud Functions
 #### Unhindered Access
@@ -40,3 +44,13 @@ Get over it!
 #### Pub/Sub
 
 ### Hosting
+
+### Concurrency
+#### Transactions
+#### Conditional Updates
+
+### Integration
+#### Stripe
+#### Email
+#### PDF Generation
+
