@@ -45,10 +45,10 @@ There's no right or wrong way to structure your data, although if you have years
 
 Each document has an ID, and it is helpful to store these IDs in other documents as references, however there is no referential integrity (and you probably don't need it).
 
-### Maps
+### Maps [(docs)](https://firebase.google.com/docs/reference/rules/rules.Map)
 Simple: property - value. Can be queried with equality/range operators.
 
-### Arrays
+### Arrays/List [(docs)](https://firebase.google.com/docs/reference/rules/rules.List)
 Simple: An array of values (of any type). Can be queried with `array-contains` operator.
 
 ### Sub-Collections
@@ -57,14 +57,16 @@ Any document can have 'sub collections'; each being another set of documents whi
 ### Replicated Data
 Get over it! You will end up with duplication. It's best not to wrestle with your data too much. Try to capture everything you need from a user in a sensible form structure, store it like that and move on.
 
-### Querying
+### Querying [(docs)](https://firebase.google.com/docs/firestore/query-data/queries)
 Multiple equality queries can be combined, along with one `orderby` or one range filter. Everything is ANDed togther. If you find yourself needing an OR query, consider a different data structure or adding derived properties to documents, i.e. given a status property which can have the values (a,b,c,z) and a requirement `status == 'a' OR status == 'Z'`, add another property, 'statusIsAorZ' and query for `statusIsAorZ == true`. Alternatively, combine two result sets using rxjs.
 
-### Indexing
+### Indexing [(docs)](https://firebase.google.com/docs/firestore/query-data/indexing)
 Indexing is mostly free, save for the compound requirements mentioned above. The database will combine existing indices to satisfy queries - this can be utilised to minimise the number of indices required while maximising the supported query combinations.
 
 ## Rules
 Cloud Firestore rules allow complete control over who does what with your data. Remember that your *public* client app code contains a identifier which points it to the correct database. This could be used to access the database in an unintended or malicious fashion. User auth and Rules are all that you have to keep things straight.
+
+[Index of all firestore rules](https://firebase.google.com/docs/reference/rules/index-all)
 
 ### Validate User ID
 In a security rule, specifying `request.auth.uid == request.resource.data.uid` (for a write) or `request.auth.uid == resource.data.uid` (for reads) is a basic start for documents owned by a single user. Other scenarios may involve storing an array of legitimate user IDs in the document. If this would be unmanagable, then you could store a document per user, containing the IDs of accessible documents.
@@ -80,6 +82,8 @@ Cloud Firestore is ace at storing and querying data but it's designed for scale,
 
 ### Enter Algolia
 Algolia is ace at free text search! In order to use it, you must push a bit of your data on to an Algolia `index` from a Cloud Firestore function, which you can then query form the app client code. Look at [this article](https://firebase.google.com/docs/firestore/solutions/search#adding_security) for more information. Rather than using an HTTP Cloud Function to generate a secured API key though, I'd recommend generating the key as your users sign up or are updated (using a Cloud Firestore function).
+
+[Indexing example](/functions/algolia.ts)
 
 ## Storage
 Cloud Firestore Storage allows simple hierarchical data storage with no ability to query. Upload a Storgae doc and store its location in Firestore document.
