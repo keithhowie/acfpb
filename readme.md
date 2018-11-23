@@ -38,9 +38,7 @@ Bear in mind, there is a user enumeration vulnerability with Firebase Auth (the 
 You can build in an email verification step if you wish, with Firebase sending out a templated verification email on behalf of the app.
 
 ### Forgotten Passwords
-Password reset is handled by a simple Firebase API call.
-
-
+Password reset is handled by a simple Firebase API call. [Example](keithhowie/acfpb/tree/master/password-reset).
 
 ## Data Structure
 There's no right or wrong way to structure your data, although if you have years of experience normalising data to store in SQL databases, I'd strongly advise forgetting all of it.
