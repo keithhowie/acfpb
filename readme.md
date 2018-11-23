@@ -41,6 +41,7 @@ You can build in an email verification step if you wish, with Firebase sending o
 Password reset is handled by a simple Firebase API call.
 
 
+
 ## Data Structure
 There's no right or wrong way to structure your data, although if you have years of experience normalising data to store in SQL databases, I'd strongly advise forgetting all of it.
 
