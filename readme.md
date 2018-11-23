@@ -95,27 +95,45 @@ More rules! Defined in a similar way to Cloud Firestore, except user access must
 Instead, you can access user 'tokens', which can take any value. For instance, you may add tokens to a user for 'userid' and/or 'groupid'. When uploading a Storage doc, include the 'userid' or 'groupid' in the doc's `metadata`. You can then write a rule which allows access only if `request.auth.token.userid == request.resource.metadata.userid` for instance.
 
 ## Cloud Functions
+### Environment variables
+
+Don't embed sensitive or transient variables in to your code; plug them in to environment variables. This involves using the CLI to persist them per environment. See the [docs](https://firebase.google.com/docs/functions/config-env).
+
 ### Unhindered Access
+
+All API calls from cloud functions bypass any security rules you may have set up. This is because they don't execute under the authority of any particular user. To reliably figure out the current user, use security rules (`request.auth.uid == resource.data.uid`) and then look up that user's record in your database.
 
 ## Cron Jobs
 [Google App Engine Cron Jobs](https://cloud.google.com/appengine/docs/standard/nodejs/scheduling-jobs-with-cron-yaml) allow scheduled invocation of App Engine http functions. You'll want to use Node.js in the Standard environment.
 
 ### App Engine Function
-Create a function which will be invoked according to the cron schedule. Ensure that the caller is indeed the cron schedulr by checking the `X-Appengine-Cron` header is set to true (this header is stripped from external requests therefore can't be spoofed). This function will simply poke a message at a Pub/Sub topic of your choice.
+Create a function which will be invoked according to the cron schedule. Ensure that the caller is indeed the cron scheduler by checking the `X-Appengine-Cron` header is set to true (this header is stripped from external requests therefore can't be spoofed). This function will simply poke a message at a Pub/Sub topic of your choice.
 
 ### Pub/Sub to Cloud Function
 Create a Cloud Firestore Function which is triggered from a Pub/Sub message from the above topic. See [this example](https://github.com/FirebaseExtended/functions-cron).
 
 ## Concurrency
 ### Transactions
+Transactions can be instigated either from the client or from within cloud functions. Documents must be read before any writes are attempted. If any read documents are modified concurrently, the transaction is automatically retried. 
+[See the docs](https://firebase.google.com/docs/firestore/manage-data/transactions).
+
 ### Conditional Updates
+Separate to transactions, isolated updates can be given a precondition, as an additional parameter, which will govern whether the update is applied.
 
 ## Hosting
 
+`firebase deploy --only:hosting`
+
 ## Integration
 ### Stripe
+[Example](/functions/stripe.ts)
+
 ### Email
+[Example](/functions/email.ts)
+
 ### PDF Generation
+Usage: generate a pdf using `generatePdf`; tokenize markdown for pdf output using `render`; save to a stream (i.e. cloud storage) using `savePdf`.
+[Example](/functions/pdf.ts)
 
 ## rxjs
-### Examples
+[Dive in](https://rxjs-dev.firebaseapp.com/api)

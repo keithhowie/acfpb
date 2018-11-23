@@ -17,7 +17,7 @@ export class ThingHelper {
           property2: change.after.get('property2'),
           etc: change.after.get('etc')
         }); //updates if it exists
-      } else{
+      } else {
         return index.deleteObject(change.after.id);
       }
     }
